@@ -1,6 +1,6 @@
 
 
-NAME = ArticleExample
+NAME = VTKSignedTensor
 
 BIBTEXDATABSENAME = InsightJournal
 
