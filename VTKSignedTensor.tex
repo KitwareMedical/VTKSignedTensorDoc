@@ -9,6 +9,7 @@
 \documentclass{InsightArticle}
 
 \usepackage[dvips]{graphicx}
+\usepackage{multirow}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -214,6 +215,24 @@ Just add another \section{}, but don't say \appendix again.
 %interpolator and an optimizer.}
 %\label{fig:RegistrationComponents}
 %\end{figure}
+\renewcommand{\arraystretch}{2.09}
+\begin{table}[ht]
+  \begin{tabular}{ccc}
+    \hline
+    \multirow{8}{*}{Eigenvalues}
+    &\texttt{ 1,  0.6,  0.4}&\multirow{8}{*}{\includegraphics[width=6cm]{SignedEigenvalueTensorGlyphMatrix}} \\
+    &\texttt{-1,  0.6,  0.4}& \\
+    &\texttt{-1, -0.6,  0.4}& \\
+    &\texttt{-1,  0.6, -0.4}& \\
+    &\texttt{ 1, -0.6,  0.4}& \\
+    &\texttt{-1, -0.6, -0.4}& \\
+    &\texttt{ 1,  0.6, -0.4}& \\
+    &\texttt{-1, -0.6, -0.4}& \\
+    \hline
+  \end{tabular}
+  \caption{Shape of the signed tensor glyph with different orientations and
+  varying eigenvalue signs and magnitudes.}
+\end{table}
 
 
 
