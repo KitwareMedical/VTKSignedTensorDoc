@@ -233,11 +233,34 @@ Just add another \section{}, but don't say \appendix again.
     \multicolumn{2}{c}{}& \multicolumn{7}{c}{Angle [degrees]} \\
     \cline{3-9}
   \end{tabular}
-  \caption{Shape of the signed tensor glyph with different orientations and
-  varying eigenvalue signs and magnitudes.}
+  \caption{Shape of the signed tensor glyph at varying eigenvalue signs and
+  magnitudes shown at varying orientations in a 3D perspective.}
   \label{tab:signed-flavors}
 \end{table}
 
+
+\begin{table}[ht]
+  \begin{tabular}{cc p{0.01cm}p{0.4cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}}
+    \hline
+    \multirow{9}{*}{Eigenvalues}
+    &\texttt{ 1, 0.6, 0.4}&\multicolumn{7}{l}{\multirow{8}{*}{\includegraphics[width=6cm]{TensorGlyphMatrix}}} \\
+    &\texttt{-1, 0.6, 0.4}& & & & & & & \\
+    &\texttt{-1,-0.6, 0.4}& & & & & & & \\
+    &\texttt{-1, 0.6,-0.4}& & & & & & & \\
+    &\texttt{ 1,-0.6, 0.4}& & & & & & & \\
+    &\texttt{-1,-0.6,-0.4}& & & & & & & \\
+    &\texttt{ 1, 0.6,-0.4}& & & & & & & \\
+    &\texttt{-1,-0.6,-0.4}& & & & & & & \\
+    \hline
+    \multicolumn{2}{c}{}& & 0 & 60 & 120 & 180 & 240 & 300 \\ [-1.1em]
+    \multicolumn{2}{c}{}& \multicolumn{7}{c}{Angle [degrees]} \\
+    \cline{3-9}
+  \end{tabular}
+  \caption{Shape of a tensor glyph that does not utilize eigenvalue sign at
+    varying orientations in a 3D perspective. The sign of the eigenvalues is
+    not portrayed in the glyph representation.}
+  \label{tab:unsigned-flavors}
+\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
