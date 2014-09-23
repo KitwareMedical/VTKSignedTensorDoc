@@ -103,19 +103,53 @@ publications must facilitate reproducibility of the reported results.
 
 \tableofcontents
 
-Using filters from the Insight Toolkit, we develop an algorithm for detecting
-and tracking thje movement of solar spots. As it is widely known, celestial
-objects such as the sun are ethereal and perfect, and therefore can not harbor
-artifacts such as spots. However, observations performed with our open source
-telescope have revealed the presence of such spots. The spots seems to continuously change positions on the solar surface.
+\section{Introduction}
 
-Automatic detection and tracking of the solar spot movements are of fundamental
-importance for allowing the authors to dedicate more time to perfectioning
-optical instruments and less time to the supervised acquisition of reliable
-data.
+When performing a deformable image registration on medical images, the end
+result we are often interested in is the spatial distribution of deformation.
+In particular, we are most interested in the non-rigid deformations. That is,
+we do not care as much about the rigid body translations, which often dominate
+displacement field content, but the local stretching, compression, and
+shearing that occurs. These quantities are quantified in the strain tensor,
+which can be derived from the displacement field. The strain tensor is a
+symmetric second rank tensor that is a function of derivatives of the
+displacement field. It is a true tensor in that it is invariant to the
+coordinate system that is used to specify its components.
 
-The reader should be warned that direct observation of the sun without proper
-equipment may result in personal injury, loss of vision and burned brains.
+Ellipsoids are often used to represent the symmetric second rank diffusion
+tensor image when DTI is performed. The ellipsoid representation emerges
+because of the equation
+
+\begin{equation}
+  \frac{x_1^2}{\lambda_1^2} + \frac{x_2^2}{\lambda_2^2} + \frac{x_3^2}{\lambda_3^2} = 1
+  \label{eqn:ellipsoid}
+\end{equation}
+
+where $\lambda_1 , \, \lambda_2, \, \lambda_3$ are the
+eigenvalues of the diffusion tensor. This quadric representation of the
+diffusion tensor is also the equation of an ellipsoid. With the ellipsoid
+orientated by the eigenvectors and the stretching along each direction
+determined by the eigenvalues, the ellipsoid succinctly represents the nine
+components of the diffusion tensor.
+
+\begin{figure}
+\center
+\includegraphics[width=5cm]{Sphere}
+\itkcaption[Ellipsoid]{Glyph representation of a a second rank tensor when
+  all the eigenvalues are positive, a ellipsoid, Eqn.~\ref{eqn:ellipsoid}.
+When all the eigenvalues are equal, it represents a sphere.}
+\label{fig:ellipsoid}
+\end{figure}
+
+In the past, ellipsoid glyphs have also been used to visualize strain fields.
+Even though the strain tensor is also a real, symmetric second rank tensor,
+the ellipsoid representation is not strictly appropriate. Unlike the diffusion
+tensor, the eigenvalues of the strain tensor are not always positive. The
+physical nature of diffusion and the 2nd Law of Thermodynamics guarantee that
+the eigenvalues will always be positive. In the case of strain, a negative
+eigenvalue physically corresponds to compression in that direction, and a
+positive eigenvalue corresponds to stretching or tension in that direction.
+
 
 \section{Principles of Solar Spot Detection}
 
