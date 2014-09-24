@@ -186,13 +186,119 @@ With two negative eigenvalues, the respresentation is a hyperboloid of two sheet
 \label{fig:onesheet}
 \end{figure}
 
+\section{VTK Implementation}
 
-\section{Principles of Solar Spot Detection}
+VTK classes were created to generate hyperboloid\'s of one and two sheets,
+\code{vtkOneSheetedHyperboloidSource} and
+\code{vtkTwoSheetedHyperboloidSource}.  A
+new tensor glyph class, \code{vtkSignedEigenvalueTensorGlyph} was created
+to use the appropriate glyph based on the
+sign of the input second rank tensor eigenvalues. The glyph is scaled
+according to the eigenvalue magnitudes and oriented in the direction of the
+eignvectors.
 
-Solar spots can be classified as the darkest objects present on an image of the
-solar surface. Algorithms such as watersheds, statistical classification and
-mathematical morphology are suitable for automatically detecting these features
-in images of the solar surface.
+Table~\ref{tab:signed-flavors} shows how glyph appearance for different sets
+of eigenvalues.  We see not only the orientation and magnitude, but the sign,
+i.e.\ tensor or compression, is immediately distinuishable. This contrasts
+with Table~\ref{tab:unsigned-flavors}, where the usual \code{vtkTensorGlyph}
+is applied.  The pattern is: if a line through a given axis does not
+intersect the glyph, there was compression in that direction.
+
+When all three eigenvalues are negative, it is the equation for an "imaginary
+ellipsoid".  Imaginary ellipoids are hard to draw (!), so a cube was used
+instead.
+
+\renewcommand{\arraystretch}{2.09}
+\begin{table}[ht]
+  \begin{tabular}{cc p{0.01cm}p{0.4cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}}
+    \hline
+    \multirow{9}{*}{Eigenvalues}
+    &\texttt{-1,-0.6,-0.4}&\multicolumn{7}{l}{\multirow{8}{*}{\includegraphics[width=6cm]{SignedEigenvalueTensorGlyphMatrix}}} \\
+    &\texttt{ 1, 0.6,-0.4}& & & & & & & \\
+    &\texttt{ 1,-0.6,-0.4}& & & & & & & \\
+    &\texttt{ 1,-0.6, 0.4}& & & & & & & \\
+    &\texttt{-1, 0.6,-0.4}& & & & & & & \\
+    &\texttt{-1,-0.6, 0.4}& & & & & & & \\
+    &\texttt{-1, 0.6, 0.4}& & & & & & & \\
+    &\texttt{ 1, 0.6, 0.4}& & & & & & & \\
+    \hline
+    \multicolumn{2}{c}{}& & 0 & 60 & 120 & 180 & 240 & 300 \\ [-1.1em]
+    \multicolumn{2}{c}{}& \multicolumn{7}{c}{Angle [degrees]} \\
+    \cline{3-9}
+  \end{tabular}
+  \itkcaption{Shape of the signed tensor glyph at varying eigenvalue signs and
+  magnitudes, i.e.\ tensor flavors, shown at varying orientations in a
+  3D perspective.}
+  \label{tab:signed-flavors}
+\end{table}
+
+
+\begin{table}[ht]
+  \begin{tabular}{cc p{0.01cm}p{0.4cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}}
+    \hline
+    \multirow{9}{*}{Eigenvalues}
+    &\texttt{-1,-0.6,-0.4}&\multicolumn{7}{l}{\multirow{8}{*}{\includegraphics[width=6cm]{TensorGlyphMatrix}}} \\
+    &\texttt{ 1, 0.6,-0.4}& & & & & & & \\
+    &\texttt{ 1,-0.6,-0.4}& & & & & & & \\
+    &\texttt{ 1,-0.6, 0.4}& & & & & & & \\
+    &\texttt{-1, 0.6,-0.4}& & & & & & & \\
+    &\texttt{-1,-0.6, 0.4}& & & & & & & \\
+    &\texttt{-1, 0.6, 0.4}& & & & & & & \\
+    &\texttt{ 1, 0.6, 0.4}& & & & & & & \\
+    \hline
+    \multicolumn{2}{c}{}& & 0 & 60 & 120 & 180 & 240 & 300 \\ [-1.1em]
+    \multicolumn{2}{c}{}& \multicolumn{7}{c}{Angle [degrees]} \\
+    \cline{3-9}
+  \end{tabular}
+  \itkcaption{Shape of a tensor glyph that does not utilize eigenvalue sign at
+    varying orientations in a 3D perspective. The sign of the eigenvalues is
+    not portrayed in the glyph representation.}
+  \label{tab:unsigned-flavors}
+\end{table}
+
+
+\section{Uniaxial Loading}
+
+Examining uniaxial loading can illustrate glyph behavior and provide insight
+into the expected glyph content. Fig.~\ref{fig:uniaxialtension} and
+Fig.~\ref{fig:uniaxialcompression} illustrate a mechanical model of a uniform,
+solid block being compressed or stretched with an unconstrained set of plates.
+There is no difference between tension and compression for the ellipsoid-only
+representation, while the difference is clear with the hyperboloids.  This,
+the simplest of mechanical models, illustrates typical material behavior:
+because the Poisson effect, compression along one direction of the material
+usually naturally generates expansion in the orthogonal directions.
+Similarly, tension along one direction usually generates contraction in
+orthogonal directions. In the case of the strain tensor, the material is
+usually in a state of eigenvalues with varying signs.
+
+\begin{figure}
+\center
+\includegraphics[width=8cm]{UniaxialTension}
+\itkcaption[Uniaxial Tension]{Uniaxial tension of a block and the corresponding strain tensor
+glyphs, unsigned on the left and signed on the right.}
+\label{fig:uniaxialtension}
+\end{figure}
+
+\begin{figure}
+\center
+\includegraphics[width=8cm]{UniaxialCompression}
+\itkcaption[Uniaxial Compression]{Uniaxial compression of a block and the corresponding strain tensor
+glyphs, unsigned on the left and signed on the right.}
+\label{fig:uniaxialcompression}
+\end{figure}
+
+The amount of orthogonal response in response to unconstrained loading,
+quantified as Poisson's ratio, is a property of the loaded material.
+Incompressible materials have a Poisson's ratio of 0.5, while compressible
+materials have a smaller Poisson's ratio. While it is physically and
+mathematically possible to have a material with a negative Poisson's ratio
+\cite{Lakes1987,Lakes1988} (all positive eigenvalues), this situation is
+rare. In the uncontrained case, a material that compresses in all direction
+(has all negative eigenvalues) would be unstable. When examining strain
+computed from incompressible or nearly incompressible materials, like soft
+tissues, the appearance of cube glyph should indicate the presence of
+unrealistic estimated deformations.
 
 
 \section{Why Image Processing Papers must include Source Code, Images and Parameters }
@@ -285,52 +391,6 @@ Just add another \section{}, but don't say \appendix again.
 %interpolator and an optimizer.}
 %\label{fig:RegistrationComponents}
 %\end{figure}
-\renewcommand{\arraystretch}{2.09}
-\begin{table}[ht]
-  \begin{tabular}{cc p{0.01cm}p{0.4cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}}
-    \hline
-    \multirow{9}{*}{Eigenvalues}
-    &\texttt{-1,-0.6,-0.4}&\multicolumn{7}{l}{\multirow{8}{*}{\includegraphics[width=6cm]{SignedEigenvalueTensorGlyphMatrix}}} \\
-    &\texttt{ 1, 0.6,-0.4}& & & & & & & \\
-    &\texttt{ 1,-0.6,-0.4}& & & & & & & \\
-    &\texttt{ 1,-0.6, 0.4}& & & & & & & \\
-    &\texttt{-1, 0.6,-0.4}& & & & & & & \\
-    &\texttt{-1,-0.6, 0.4}& & & & & & & \\
-    &\texttt{-1, 0.6, 0.4}& & & & & & & \\
-    &\texttt{ 1, 0.6, 0.4}& & & & & & & \\
-    \hline
-    \multicolumn{2}{c}{}& & 0 & 60 & 120 & 180 & 240 & 300 \\ [-1.1em]
-    \multicolumn{2}{c}{}& \multicolumn{7}{c}{Angle [degrees]} \\
-    \cline{3-9}
-  \end{tabular}
-  \caption{Shape of the signed tensor glyph at varying eigenvalue signs and
-  magnitudes shown at varying orientations in a 3D perspective.}
-  \label{tab:signed-flavors}
-\end{table}
-
-
-\begin{table}[ht]
-  \begin{tabular}{cc p{0.01cm}p{0.4cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}p{0.5cm}}
-    \hline
-    \multirow{9}{*}{Eigenvalues}
-    &\texttt{-1,-0.6,-0.4}&\multicolumn{7}{l}{\multirow{8}{*}{\includegraphics[width=6cm]{TensorGlyphMatrix}}} \\
-    &\texttt{ 1, 0.6,-0.4}& & & & & & & \\
-    &\texttt{ 1,-0.6,-0.4}& & & & & & & \\
-    &\texttt{ 1,-0.6, 0.4}& & & & & & & \\
-    &\texttt{-1, 0.6,-0.4}& & & & & & & \\
-    &\texttt{-1,-0.6, 0.4}& & & & & & & \\
-    &\texttt{-1, 0.6, 0.4}& & & & & & & \\
-    &\texttt{ 1, 0.6, 0.4}& & & & & & & \\
-    \hline
-    \multicolumn{2}{c}{}& & 0 & 60 & 120 & 180 & 240 & 300 \\ [-1.1em]
-    \multicolumn{2}{c}{}& \multicolumn{7}{c}{Angle [degrees]} \\
-    \cline{3-9}
-  \end{tabular}
-  \caption{Shape of a tensor glyph that does not utilize eigenvalue sign at
-    varying orientations in a 3D perspective. The sign of the eigenvalues is
-    not portrayed in the glyph representation.}
-  \label{tab:unsigned-flavors}
-\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
